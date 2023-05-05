@@ -14,16 +14,11 @@ app.use((req, res, next) => {
 	next();
 });
 
-
 app.get("/:userID", getTodos);
 app.get("/todos/:userID", getTodos);
-
 app.get("/todos/:userID/:todoID", getSingleTodo);
-
 app.post("/todos/:userID", getTodosByUserID);
-
 app.post("/register", registerUser);
-
 app.post("/login", loginUser);
 
 app.listen(8000, (error) => {
