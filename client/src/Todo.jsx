@@ -8,7 +8,8 @@ export function useTodos() {
 
 export default function TodoContext({ children }) {
 
-    const [todos, setTodos] = useState([])
+    const TODOS_KEY = "todos"
+    const [todos, setTodos] = useState(JSON.parse(localStorage.getItem(TODOS_KEY)) || [])
 
     function addTodo(value) {
         const todo = {
@@ -16,17 +17,18 @@ export default function TodoContext({ children }) {
             completed: false,
             id: Date.now()
         }
-        setTodos(() => [...todos, todo])
+        const newTodos = JSON.parse(JSON.stringify(todos))
+        newTodos.push(todo)
+        localStorage.setItem(TODOS_KEY, JSON.stringify(newTodos))
+        setTodos(() => newTodos)
     }
 
     function updateTodo(id) {
-        console.log(id)
         for (let i = 0; i < todos.length; i++) {
             const todo = todos[i];
             if (todo.id == id) {
                 todo.completed = !todo.completed
                 setTodos(() => [...todos])
-                console.log(todos)
                 return
             }
         }

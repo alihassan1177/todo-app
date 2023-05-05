@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 import { useTodos } from "./Todo";
-import {login, register} from "./Api.js";
+import { login, register } from "./Api.js";
 
 function App() {
   return (
@@ -18,18 +18,18 @@ function App() {
 async function handleFormSubmit(e, data, endpoint) {
   e.preventDefault();
 
-  switch(endpoint){
-  case "/register":
-    const registerStatus = await register(data)
-    console.log(registerStatus)
-    break;
-  case "/login":
-    const loginStatus= await login(data)
-    console.log(loginStatus)
-    break;
-  default :
-    console.log("No endpoint Provided")
-    break;
+  switch (endpoint) {
+    case "/register":
+      const registerStatus = await register(data);
+      console.log(registerStatus);
+      break;
+    case "/login":
+      const loginStatus = await login(data);
+      console.log(loginStatus);
+      break;
+    default:
+      console.log("No endpoint Provided");
+      break;
   }
 }
 
@@ -52,6 +52,7 @@ function RegistrationComponent() {
         <input onChange={(e) => setPassword(e.target.value)} type="password" />
         <button>Sign Up</button>
       </form>
+      <Link to="/login">Already have an Account</Link>
     </div>
   );
 }
@@ -70,6 +71,7 @@ function LoginComponent() {
         <input onChange={(e) => setPassword(e.target.value)} type="password" />
         <button>Sign In</button>
       </form>
+      <Link to="/register">Create an Account</Link>
     </div>
   );
 }
@@ -86,6 +88,11 @@ function HomeComponent() {
 
   return (
     <div>
+      <Link
+        to="/register"
+      >
+        Save your todos Online
+      </Link>
       <form onSubmit={handleSubmit}>
         <input ref={inputRef} type="text" />
         <button type="submit">Add Todo</button>
