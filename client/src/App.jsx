@@ -1,15 +1,23 @@
 import { useRef, useState } from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import { useTodos } from "./Todo";
 import { login, register } from "./Api.js";
+import { useUser } from "./User.jsx"
 
 function App() {
+  const {user} = useUser()
   return (
     <>
       <Routes>
-        <Route path="/login" element={<LoginComponent />} />
-        <Route path="/register" element={<RegistrationComponent />} />
+        {
+          !user && 
+        <>          
+          <Route path="/login" element={<LoginComponent />} />
+          <Route path="/register" element={<RegistrationComponent />} />
+        </>
+        }
         <Route path="/" element={<HomeComponent />} />
+      
       </Routes>
     </>
   );
@@ -18,14 +26,26 @@ function App() {
 async function handleFormSubmit(e, data, endpoint) {
   e.preventDefault();
 
+  const {saveUserInfo} = useUser()
+
+  const navigate = useNavigate()
   switch (endpoint) {
     case "/register":
       const registerStatus = await register(data);
-      console.log(registerStatus);
+      if(registerStatus?.status){
+        navigate("/login")
+      }else{
+        console.log("Something went wrong")
+      }
       break;
     case "/login":
       const loginStatus = await login(data);
-      console.log(loginStatus);
+      if(loginStatus?.status){
+        navigate("/")
+        saveUserInfo(loginStatus.user)
+      }else{
+        console.log("User Credentials not Matched")
+      }
       break;
     default:
       console.log("No endpoint Provided");

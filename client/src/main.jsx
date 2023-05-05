@@ -4,14 +4,17 @@ import App from './App.jsx'
 import './index.css'
 import { BrowserRouter } from "react-router-dom"
 import TodoContext from './Todo.jsx'
+import UserContext from './User.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
+    <UserContext>
       <TodoContext>
         <App />
       </TodoContext>
+      </UserContext>
     </BrowserRouter>
   </React.StrictMode>,
 )
